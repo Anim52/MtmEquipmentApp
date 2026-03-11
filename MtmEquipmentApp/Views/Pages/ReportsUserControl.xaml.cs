@@ -1,4 +1,4 @@
-﻿using MtmEquipmentApp.ViewModel.Equipments;
+﻿using MtmEquipmentApp.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,14 +15,14 @@ using System.Windows.Shapes;
 namespace MtmEquipmentApp.Views.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для EquipmentPage.xaml
+    /// Логика взаимодействия для ReportsUserControl.xaml
     /// </summary>
-    public partial class EquipmentPage : UserControl
+    public partial class ReportsUserControl : UserControl
     {
-        public EquipmentPage()
+        public ReportsUserControl()
         {
             InitializeComponent();
-            DataContext = new EquipmentViewModel();
+            DataContext = new ReportsViewModel();
         }
     }
 }

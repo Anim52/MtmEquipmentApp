@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MtmEquipmentApp.ViewModel.Inspections;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -21,6 +22,7 @@ namespace MtmEquipmentApp.Views.Pages
         public InspectionsPage()
         {
             InitializeComponent();
+            DataContext = new InspectionViewModel();
         }
     }
 }

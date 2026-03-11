@@ -19,18 +19,16 @@ namespace MtmEquipmentApp.Views.Windows
     /// </summary>
     public partial class InspectionEditWindow : Window
     {
-        public InspectionEditWindow(Inspection inspection)
+        public InspectionEditWindow(Inspection? inspection = null)
         {
             InitializeComponent();
+            DataContext = new InspectionEditViewModel(inspection, this);
+        }
 
-            if (inspection == null)
-            {
-                DataContext = new InspectionEditViewModel(null); // Новая инспекция
-            }
-            else
-            {
-                DataContext = new InspectionEditViewModel(inspection); // Редактируем существующую
-            }
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
         }
     }
 }

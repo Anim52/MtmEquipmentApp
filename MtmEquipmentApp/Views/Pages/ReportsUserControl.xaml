@@ -1,9 +1,10 @@
-﻿<UserControl x:Class="MtmEquipmentApp.Views.Pages.InspectionsPage"
+﻿<UserControl x:Class="MtmEquipmentApp.Views.Pages.ReportsUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MtmEquipmentApp.Views.Pages"
+             mc:Ignorable="d" 
              >
 
     <UserControl.Resources>
@@ -53,19 +54,29 @@
             <Setter Property="Background" Value="#E2E8F0"/>
         </Style>
 
-        <Style x:Key="DangerButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
-            <Setter Property="Background" Value="#DC2626"/>
-            <Setter Property="Foreground" Value="White"/>
-        </Style>
-
         <Style x:Key="ModernDatePickerStyle" TargetType="DatePicker">
             <Setter Property="Height" Value="42"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Foreground" Value="#0F172A"/>
             <Setter Property="Background" Value="#F8FAFC"/>
             <Setter Property="BorderBrush" Value="#E2E8F0"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="8,0"/>
+        </Style>
+
+        <Style x:Key="ModernComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#0F172A"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="6,2"/>
+        </Style>
+
+        <Style x:Key="StatValueTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="34"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#0F172A"/>
         </Style>
 
         <Style TargetType="DataGridColumnHeader">
@@ -100,7 +111,6 @@
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="Auto"/>
                                 </SelectiveScrollingGrid.RowDefinitions>
-
                                 <DataGridCellsPresenter Grid.Column="1"/>
                             </SelectiveScrollingGrid>
                         </Border>
@@ -144,51 +154,31 @@
                 Background="White"
                 CornerRadius="22"
                 Effect="{StaticResource CardShadow}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <StackPanel>
+                <Border Background="#EEF4FF"
+                        CornerRadius="10"
+                        Padding="10,5"
+                        HorizontalAlignment="Left"
+                        Margin="0,0,0,12">
+                    <TextBlock Text="Аналитика"
+                               FontSize="12"
+                               FontWeight="SemiBold"
+                               Foreground="#2563EB"/>
+                </Border>
 
-                <StackPanel>
-                    <Border Background="#EEF4FF"
-                            CornerRadius="10"
-                            Padding="10,5"
-                            HorizontalAlignment="Left"
-                            Margin="0,0,0,12">
-                        <TextBlock Text="Журнал контроля"
-                                   FontSize="12"
-                                   FontWeight="SemiBold"
-                                   Foreground="#2563EB"/>
-                    </Border>
+                <TextBlock Text="Отчёты"
+                           FontSize="30"
+                           FontWeight="Bold"
+                           Foreground="#0F172A"/>
 
-                    <TextBlock Text="Инспекции"
-                               FontSize="30"
-                               FontWeight="Bold"
-                               Foreground="#0F172A"/>
-
-                    <TextBlock Text="Журнал проверок оборудования"
-                               Margin="0,6,0,0"
-                               FontSize="14"
-                               Foreground="#64748B"/>
-                </StackPanel>
-
-                <StackPanel Grid.Column="1"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Center">
-                    <Button Content="Добавить"
-                            Margin="0,0,10,0"
-                            Style="{StaticResource PrimaryButtonStyle}"
-                            Command="{Binding AddCommand}"/>
-
-                    <Button Content="Обновить"
-                            Style="{StaticResource SecondaryButtonStyle}"
-                            Command="{Binding RefreshCommand}"/>
-                </StackPanel>
-            </Grid>
+                <TextBlock Text="Сводная информация по оборудованию и инспекциям"
+                           Margin="0,6,0,0"
+                           FontSize="14"
+                           Foreground="#64748B"/>
+            </StackPanel>
         </Border>
 
-        <!-- Фильтр -->
+        <!-- Фильтры -->
         <Border Grid.Row="1"
                 Margin="20,0,20,12"
                 Padding="18"
@@ -197,8 +187,9 @@
                 Effect="{StaticResource CardShadow}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="280"/>
-                    <ColumnDefinition Width="280"/>
+                    <ColumnDefinition Width="230"/>
+                    <ColumnDefinition Width="230"/>
+                    <ColumnDefinition Width="230"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
@@ -223,77 +214,129 @@
                                 Style="{StaticResource ModernDatePickerStyle}"/>
                 </Border>
 
-                <StackPanel Grid.Column="2"
+                <Border Grid.Column="2"
+                        Background="#F8FAFC"
+                        BorderBrush="#E2E8F0"
+                        BorderThickness="1"
+                        CornerRadius="14"
+                        Padding="8,2"
+                        Margin="0,0,12,0">
+                    <ComboBox ItemsSource="{Binding Departments}"
+                              SelectedItem="{Binding SelectedDepartment}"
+                              DisplayMemberPath="Name"
+                              Style="{StaticResource ModernComboBoxStyle}"/>
+                </Border>
+
+                <StackPanel Grid.Column="3"
                             Orientation="Horizontal"
                             HorizontalAlignment="Right">
-                    <Button Content="Редактировать"
+                    <Button Content="Сформировать"
                             Margin="0,0,10,0"
-                            Style="{StaticResource SecondaryButtonStyle}"
-                            Command="{Binding EditCommand}"/>
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Command="{Binding GenerateCommand}"/>
 
-                    <Button Content="Удалить"
-                            Style="{StaticResource DangerButtonStyle}"
-                            Command="{Binding DeleteCommand}"/>
+                    <Button Content="Сброс"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Command="{Binding ResetCommand}"/>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!-- Таблица -->
-        <Border Grid.Row="2"
-                Margin="20,0,20,20"
-                Padding="14"
-                Background="White"
-                CornerRadius="22"
-                Effect="{StaticResource CardShadow}">
+        <!-- Контент -->
+        <Grid Grid.Row="2" Margin="20,0,20,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="130"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <DataGrid ItemsSource="{Binding Inspections}"
-                      SelectedItem="{Binding SelectedInspection}"
-                      AutoGenerateColumns="False"
-                      CanUserAddRows="False"
-                      IsReadOnly="True"
-                      HeadersVisibility="Column"
-                      GridLinesVisibility="None"
-                      BorderThickness="0"
-                      Background="Transparent"
-                      RowBackground="White"
-                      AlternatingRowBackground="#F8FAFC"
-                      ColumnHeaderHeight="44"
-                      RowHeight="46"
-                      FontSize="14"
-                      SelectionMode="Single"
-                      SelectionUnit="FullRow">
+            <!-- Карточки статистики -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                <DataGrid.Columns>
+                <Border Grid.Column="0"
+                        Background="White"
+                        CornerRadius="22"
+                        Padding="22"
+                        Effect="{StaticResource CardShadow}">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Всего оборудования"
+                                   FontSize="15"
+                                   Foreground="#64748B"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding TotalEquipment}"
+                                   Style="{StaticResource StatValueTextStyle}"/>
+                    </StackPanel>
+                </Border>
 
-                    <DataGridTextColumn Header="Дата"
-                                        Binding="{Binding Date}"
-                                        Width="140"/>
+                <Border Grid.Column="2"
+                        Background="White"
+                        CornerRadius="22"
+                        Padding="22"
+                        Effect="{StaticResource CardShadow}">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Инспекций"
+                                   FontSize="15"
+                                   Foreground="#64748B"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding TotalInspections}"
+                                   Style="{StaticResource StatValueTextStyle}"/>
+                    </StackPanel>
+                </Border>
 
-                    <DataGridTextColumn Header="Оборудование"
-                                        Binding="{Binding Equipment.Name}"
-                                        Width="*"/>
+                <Border Grid.Column="4"
+                        Background="White"
+                        CornerRadius="22"
+                        Padding="22"
+                        Effect="{StaticResource CardShadow}">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Выявлено дефектов"
+                                   FontSize="15"
+                                   Foreground="#64748B"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding TotalDefects}"
+                                   Style="{StaticResource StatValueTextStyle}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
 
-                    <DataGridTextColumn Header="Инв. номер"
-                                        Binding="{Binding Equipment.InventoryNumber}"
-                                        Width="160"/>
-
-                    <DataGridTextColumn Header="Инспектор"
-                                        Binding="{Binding Inspector.FullName}"
-                                        Width="200"/>
-
-                    <DataGridCheckBoxColumn Header="Дефект"
-                                            Binding="{Binding IsDefective}"
-                                            Width="100"/>
-
-                    <DataGridTextColumn Header="Комментарий"
-                                        Binding="{Binding Remarks}"
-                                        Width="300"/>
-
-                </DataGrid.Columns>
-
-            </DataGrid>
-
-        </Border>
-
+            <!-- Таблица -->
+            <Border Grid.Row="1"
+                    Margin="0,12,0,0"
+                    Padding="14"
+                    Background="White"
+                    CornerRadius="22"
+                    Effect="{StaticResource CardShadow}">
+                <DataGrid ItemsSource="{Binding ReportRows}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          IsReadOnly="True"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="None"
+                          BorderThickness="0"
+                          Background="Transparent"
+                          RowBackground="White"
+                          AlternatingRowBackground="#F8FAFC"
+                          ColumnHeaderHeight="44"
+                          RowHeight="46"
+                          FontSize="14"
+                          SelectionMode="Single"
+                          SelectionUnit="FullRow">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Оборудование" Binding="{Binding EquipmentName}" Width="*"/>
+                        <DataGridTextColumn Header="Инв. номер" Binding="{Binding InventoryNumber}" Width="160"/>
+                        <DataGridTextColumn Header="Подразделение" Binding="{Binding DepartmentName}" Width="180"/>
+                        <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="140"/>
+                        <DataGridTextColumn Header="Инспекций" Binding="{Binding InspectionCount}" Width="120"/>
+                        <DataGridCheckBoxColumn Header="Есть дефекты" Binding="{Binding HasDefects}" Width="120"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

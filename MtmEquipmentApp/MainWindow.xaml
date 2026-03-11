@@ -4,52 +4,234 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MtmEquipmentApp"
+        xmlns:conv="clr-namespace:MtmEquipmentApp.Converters"
         mc:Ignorable="d"
-        Title="Учет оборудования" Height="800" Width="1200">
-    <Grid>
-        <!-- Боковая панель с кнопками для навигации -->
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+        Title="{Binding Title}"
+        Height="720"
+        Width="1280"
+        WindowStartupLocation="CenterScreen"
+        Background="#F1F5F9">
 
-        <Border Background="#1F2937" Grid.Column="0">
-            <StackPanel>
-                <Button Content="Оборудование"
-                        Height="60"
-                        FontSize="18"
-                        Foreground="White"
-                        Background="#374151"
-                        Command="{Binding NavigateCommand}"
-                        CommandParameter="EquipmentPage" />
+    <Window.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
-                <Button Content="Подразделения"
-                        Height="60"
-                        FontSize="18"
-                        Foreground="White"
-                        Background="#374151"
-                        Command="{Binding NavigateCommand}"
-                        CommandParameter="DepartmentPage" />
+        <DropShadowEffect x:Key="SoftShadow"
+                          BlurRadius="22"
+                          ShadowDepth="0"
+                          Opacity="0.10"
+                          Color="#000000"/>
 
-                <Button Content="Пользователи"
-                        Height="60"
-                        FontSize="18"
-                        Foreground="White"
-                        Background="#374151"
-                        Command="{Binding NavigateCommand}"
-                        CommandParameter="UserPage" />
+        <DropShadowEffect x:Key="LightShadow"
+                          BlurRadius="14"
+                          ShadowDepth="0"
+                          Opacity="0.07"
+                          Color="#000000"/>
 
-                <Button Content="Инспекции"
-                        Height="60"
-                        FontSize="18"
-                        Foreground="White"
-                        Background="#374151"
-                        Command="{Binding NavigateCommand}"
-                        CommandParameter="InspectionPage" />
-            </StackPanel>
+        <LinearGradientBrush x:Key="SidebarGradient" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#0F172A" Offset="0"/>
+            <GradientStop Color="#111827" Offset="0.55"/>
+            <GradientStop Color="#1E293B" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="HeaderAccent" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#3B82F6" Offset="0"/>
+            <GradientStop Color="#2563EB" Offset="1"/>
+        </LinearGradientBrush>
+
+        <Style x:Key="NavButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="46"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Foreground" Value="#E5E7EB"/>
+            <Setter Property="Background" Value="#1E293B"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="16,0,16,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="14">
+                            <ContentPresenter VerticalAlignment="Center"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#334155"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#475569"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="88"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Верхняя панель -->
+        <Border Grid.Row="0"
+                Background="White"
+                CornerRadius="24"
+                Padding="26,18"
+                Effect="{StaticResource SoftShadow}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel VerticalAlignment="Center">
+                    <Border Background="#EEF4FF"
+                            CornerRadius="12"
+                            Padding="10,5"
+                            HorizontalAlignment="Left"
+                            Margin="0,0,0,10">
+                        <TextBlock Text="Панель управления"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   Foreground="#2563EB"/>
+                    </Border>
+
+                    <TextBlock Text="Система учёта оборудования"
+                               FontSize="28"
+                               FontWeight="Bold"
+                               Foreground="#0F172A"/>
+
+                    <TextBlock Text="Главная панель"
+                               FontSize="14"
+                               Foreground="#64748B"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+
+                <Border Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Background="#F8FAFC"
+                        BorderBrush="#E2E8F0"
+                        BorderThickness="1"
+                        CornerRadius="18"
+                        Padding="14,1"
+                        MinWidth="220">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="44"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Width="44"
+                                Height="44"
+                                CornerRadius="22"
+                                Background="{StaticResource HeaderAccent}"
+                                VerticalAlignment="Center">
+                            <TextBlock Text="👤"
+                                       FontSize="18"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+
+                        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding CurrentUserName}"
+                                       FontSize="15"
+                                       FontWeight="SemiBold"
+                                       Foreground="#0F172A"/>
+                            <TextBlock Text="{Binding CurrentUserRole}"
+                                       FontSize="13"
+                                       Foreground="#64748B"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
         </Border>
 
-        <!-- Контент, где будут отображаться страницы -->
-        <Frame Grid.Column="1" Name="MainFrame" NavigationUIVisibility="Hidden"/>
+        <!-- Основная часть -->
+        <Grid Grid.Row="1" Margin="0,14,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="290"/>
+                <ColumnDefinition Width="14"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Левая панель -->
+            <Border Grid.Column="0"
+                    Background="{StaticResource SidebarGradient}"
+                    CornerRadius="24"
+                    Padding="20"
+                    Effect="{StaticResource SoftShadow}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="Навигация"
+                                   Foreground="White"
+                                   FontSize="22"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,6"/>
+
+                        <TextBlock Text="Основные разделы системы"
+                                   Foreground="#94A3B8"
+                                   FontSize="13"
+                                   Margin="0,0,0,22"/>
+                    </StackPanel>
+
+                    <ScrollViewer Grid.Row="1"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel>
+                            <Button Content="Подразделения"
+                                    Style="{StaticResource NavButtonStyle}"
+                                    Visibility="{Binding CanOpenDepartments, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Command="{Binding OpenDepartmentsCommand}"/>
+
+                            <Button Content="Оборудование"
+                                    Style="{StaticResource NavButtonStyle}"
+                                    Visibility="{Binding CanOpenEquipment, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Command="{Binding OpenEquipmentCommand}"/>
+
+                            <Button Content="Пользователи"
+                                    Style="{StaticResource NavButtonStyle}"
+                                    Visibility="{Binding CanOpenUsers, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Command="{Binding OpenUsersCommand}"/>
+
+                            <Button Content="Отчёты"
+                                    Style="{StaticResource NavButtonStyle}"
+                                    Visibility="{Binding CanOpenReports, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Command="{Binding OpenReportsCommand}"/>
+
+                            <Button Content="Инспекции"
+                                    Style="{StaticResource NavButtonStyle}"
+                                    Margin="0"
+                                    Visibility="{Binding CanOpenInspections, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Command="{Binding OpenInspectionsCommand}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+            <!-- Контент -->
+            <Border Grid.Column="2"
+        Background="#FFFFFF"
+        CornerRadius="24"
+        Padding="12"
+        Effect="{StaticResource LightShadow}">
+                <ContentControl Content="{Binding CurrentView}"
+                    Margin="0"/>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

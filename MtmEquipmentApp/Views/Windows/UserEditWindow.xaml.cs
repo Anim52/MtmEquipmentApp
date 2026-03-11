@@ -19,20 +19,22 @@ namespace MtmEquipmentApp.Views.Windows
     /// </summary>
     public partial class UserEditWindow : Window
     {
-        private readonly User _user;
-
-        public UserEditWindow(User user)
+        public UserEditWindow(int? userId = null)
         {
             InitializeComponent();
+            DataContext = new UserEditViewModel(this, userId);
+        }
 
-            if (user == null)
-            {
-                DataContext = new UserEditViewModel(null); // Новый пользователь
-            }
-            else
-            {
-                DataContext = new UserEditViewModel(user); // Редактируем существующего
-            }
+        private void PasswordInput_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is UserEditViewModel vm && sender is PasswordBox passwordBox)
+                vm.Password = passwordBox.Password;
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
         }
     }
 }

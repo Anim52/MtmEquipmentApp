@@ -19,20 +19,16 @@ namespace MtmEquipmentApp.Views.Windows
     /// </summary>
     public partial class DepartmentEditWindow : Window
     {
-        private readonly Department _department;
-
-        public DepartmentEditWindow(Department department)
+        public DepartmentEditWindow(int? departmentId = null)
         {
             InitializeComponent();
+            DataContext = new DepartmentEditViewModel(this, departmentId);
+        }
 
-            if (department == null)
-            {
-                DataContext = new DepartmentEditViewModel(null); // Новое подразделение
-            }
-            else
-            {
-                DataContext = new DepartmentEditViewModel(department); // Редактирование существующего
-            }
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
         }
     }
 }

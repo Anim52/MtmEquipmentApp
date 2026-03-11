@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MtmEquipmentApp.ViewModel.Equipments;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -17,9 +18,16 @@ namespace MtmEquipmentApp.Views.Windows
     /// </summary>
     public partial class EquipmentEditWindow : Window
     {
-        public EquipmentEditWindow()
+        public EquipmentEditWindow(int? equipmentId = null)
         {
             InitializeComponent();
+            DataContext = new EquipmentEditViewModel(this, equipmentId);
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
         }
     }
 }

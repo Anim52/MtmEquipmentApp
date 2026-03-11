@@ -1,92 +1,106 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.EntityFrameworkCore;
 using MtmEquipmentApp.Context;
 using MtmEquipmentApp.Models;
+using MtmEquipmentApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Windows;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MtmEquipmentApp.ViewModel.Inspections
 {
     public partial class InspectionEditViewModel : ObservableObject
     {
-        [ObservableProperty]
-        private DateTime inspectionDate;
+        private readonly Inspection inspection;
+        private readonly Window window;
 
         [ObservableProperty]
-        private string remarks;
+        private DateTime date;
 
         [ObservableProperty]
-        private Equipment selectedEquipment;
+        private string remarks = "";
 
         [ObservableProperty]
-        private User selectedInspector;
+        private bool isDefective;
 
-        public ObservableCollection<Equipment> EquipmentList { get; } = new ObservableCollection<Equipment>();
-        public ObservableCollection<User> InspectorList { get; } = new ObservableCollection<User>();
+        [ObservableProperty]
+        private Equipment? selectedEquipment;
 
-        private Inspection _inspection;
+        public ObservableCollection<Equipment> EquipmentList { get; set; } = new();
 
-        public InspectionEditViewModel(Inspection inspection)
+        public InspectionEditViewModel(Inspection? inspection, Window window)
         {
+            this.window = window;
+            this.inspection = inspection ?? new Inspection();
+
+            LoadEquipment();
+
             if (inspection != null)
             {
-                _inspection = inspection;
-                InspectionDate = inspection.Date;
+                Date = inspection.Date;
                 Remarks = inspection.Remarks;
-                SelectedEquipment = inspection.Equipment;
-                SelectedInspector = inspection.Inspector;
+                IsDefective = inspection.IsDefective;
+
+                SelectedEquipment = EquipmentList
+                    .FirstOrDefault(x => x.Id == inspection.EquipmentId);
             }
             else
             {
-                _inspection = new Inspection();
-                InspectionDate = DateTime.Now; // по умолчанию текущая дата
-            }
-
-            using var db = new AppDbContext();
-            var equipmentList = db.Equipment.ToList();
-            var inspectorList = db.Users.Where(u => u.Role == UserRole.Inspector).ToList();
-
-            foreach (var equipment in equipmentList)
-            {
-                EquipmentList.Add(equipment);
-            }
-
-            foreach (var inspector in inspectorList)
-            {
-                InspectorList.Add(inspector);
+                Date = DateTime.Now;
             }
         }
 
-        // Сохранение данных инспекции
-        [RelayCommand]
-        public void Save()
+        private void LoadEquipment()
         {
             using var db = new AppDbContext();
 
-            _inspection.Date = InspectionDate;
-            _inspection.Remarks = Remarks;
-            _inspection.Equipment = SelectedEquipment;
-            _inspection.Inspector = SelectedInspector;
+            var list = db.Equipment
+                .AsNoTracking()
+                .OrderBy(x => x.Name)
+                .ToList();
 
-            if (_inspection.Id == 0) // новая инспекция
+            EquipmentList.Clear();
+
+            foreach (var item in list)
+                EquipmentList.Add(item);
+        }
+
+        [RelayCommand]
+        private void Save()
+        {
+            if (SelectedEquipment == null)
             {
-                db.Inspections.Add(_inspection);
+                MessageBox.Show("Выберите оборудование.");
+                return;
             }
-            else // редактируем существующую
+
+            if (SessionService.CurrentUser == null)
             {
-                db.Inspections.Update(_inspection);
+                MessageBox.Show("Не найден текущий пользователь.");
+                return;
             }
+
+            using var db = new AppDbContext();
+
+            inspection.Date = Date;
+            inspection.Remarks = Remarks;
+            inspection.IsDefective = IsDefective;
+            inspection.EquipmentId = SelectedEquipment.Id;
+            inspection.UserId = SessionService.CurrentUser.Id;
+
+            if (inspection.Id == 0)
+                db.Inspections.Add(inspection);
+            else
+                db.Inspections.Update(inspection);
 
             db.SaveChanges();
-        }
 
-        // Отмена
-        [RelayCommand]
-        public void Cancel()
-        {
-            // Логика отмены
+            window.DialogResult = true;
+            window.Close();
         }
     }
 }

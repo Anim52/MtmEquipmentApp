@@ -5,8 +5,213 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MtmEquipmentApp.Views.Windows"
         mc:Ignorable="d"
-        Title="EquipmentEditWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="Оборудование"
+        Height="530"
+        Width="560"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="#F8FAFC">
+
+    <Window.Resources>
+        <DropShadowEffect x:Key="WindowShadow"
+                          BlurRadius="24"
+                          ShadowDepth="0"
+                          Opacity="0.12"
+                          Color="#000000"/>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="MinWidth" Value="110"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#2563EB"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="18,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="12">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.92"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.80"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
+            <Setter Property="Foreground" Value="#0F172A"/>
+            <Setter Property="Background" Value="#E2E8F0"/>
+        </Style>
+
+        <Style x:Key="ModernTextBoxStyle" TargetType="TextBox">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="#0F172A"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="ModernComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#0F172A"/>
+            <Setter Property="Padding" Value="4,2"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Border Padding="26"
+                Background="White"
+                CornerRadius="22"
+                Effect="{StaticResource WindowShadow}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel>
+                    <Border Background="#EEF4FF"
+                            CornerRadius="10"
+                            Padding="10,5"
+                            HorizontalAlignment="Left"
+                            Margin="0,0,0,12">
+                        <TextBlock Text="Редактирование"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   Foreground="#2563EB"/>
+                    </Border>
+
+                    <TextBlock Text="{Binding WindowTitle}"
+                               FontSize="28"
+                               FontWeight="Bold"
+                               Foreground="#0F172A"/>
+                </StackPanel>
+
+                <TextBlock Grid.Row="1"
+                           Text="Название оборудования"
+                           Margin="0,24,0,8"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="#334155"/>
+
+                <Border Grid.Row="2"
+                        Background="#F8FAFC"
+                        BorderBrush="#E2E8F0"
+                        BorderThickness="1"
+                        CornerRadius="14"
+                        Padding="12,10">
+                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource ModernTextBoxStyle}"/>
+                </Border>
+
+                <TextBlock Grid.Row="3"
+                           Text="Инвентарный номер"
+                           Margin="0,16,0,8"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="#334155"/>
+
+                <Border Grid.Row="4"
+                        Background="#F8FAFC"
+                        BorderBrush="#E2E8F0"
+                        BorderThickness="1"
+                        CornerRadius="14"
+                        Padding="12,10">
+                    <TextBox Text="{Binding InventoryNumber, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource ModernTextBoxStyle}"/>
+                </Border>
+
+                <Grid Grid.Row="5" Margin="0,16,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Margin="0,0,10,0">
+                        <TextBlock Text="Статус"
+                                   Margin="0,0,0,8"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="#334155"/>
+
+                        <Border Background="#F8FAFC"
+                                BorderBrush="#E2E8F0"
+                                BorderThickness="1"
+                                CornerRadius="14"
+                                Padding="8,4">
+                            <ComboBox ItemsSource="{Binding Statuses}"
+                                      SelectedItem="{Binding SelectedStatus}"
+                                      Style="{StaticResource ModernComboBoxStyle}"/>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                        <TextBlock Text="Подразделение"
+                                   Margin="0,0,0,8"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="#334155"/>
+
+                        <Border Background="#F8FAFC"
+                                BorderBrush="#E2E8F0"
+                                BorderThickness="1"
+                                CornerRadius="14"
+                                Padding="8,4">
+                            <ComboBox ItemsSource="{Binding Departments}"
+                                      SelectedItem="{Binding SelectedDepartment}"
+                                      DisplayMemberPath="Name"
+                                      Style="{StaticResource ModernComboBoxStyle}"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock Grid.Row="6"
+                           Text="{Binding ErrorMessage}"
+                           Margin="0,16,0,0"
+                           Foreground="#DC2626"
+                           FontSize="13"
+                           TextWrapping="Wrap"
+                           MinHeight="22"/>
+
+                <StackPanel Grid.Row="7"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Margin="0,20,0,0">
+                    <Button Content="Отмена"
+                            Margin="0,0,10,0"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Click="Cancel_Click"/>
+
+                    <Button Content="Сохранить"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Command="{Binding SaveCommand}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </Window>

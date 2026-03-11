@@ -22,7 +22,7 @@ namespace MtmEquipmentApp.Views.Pages
         public UsersPage()
         {
             InitializeComponent();
-            DataContext = new UserPageViewModel();
+            DataContext = new UserViewModel();
         }
     }
 }

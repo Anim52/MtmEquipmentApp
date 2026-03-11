@@ -1,83 +1,142 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.EntityFrameworkCore;
 using MtmEquipmentApp.Context;
 using MtmEquipmentApp.Models;
+using MtmEquipmentApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Text;
+using System.Windows;
 
 namespace MtmEquipmentApp.ViewModel.Users
 {
     public partial class UserEditViewModel : ObservableObject
     {
-        [ObservableProperty]
-        private string fullName;
+        private readonly Window window;
+        private readonly int? userId;
 
         [ObservableProperty]
-        private string login;
+        private string windowTitle = "Добавление пользователя";
 
         [ObservableProperty]
-        private UserRole role;
+        private string fullName = string.Empty;
 
-        private User _user;
+        [ObservableProperty]
+        private string login = string.Empty;
 
-        // Список ролей
-        public ObservableCollection<UserRole> Roles { get; } = new ObservableCollection<UserRole>
+        [ObservableProperty]
+        private UserRole selectedRole = UserRole.Viewer;
+
+        [ObservableProperty]
+        private string password = string.Empty;
+
+        [ObservableProperty]
+        private string errorMessage = string.Empty;
+
+        public ObservableCollection<UserRole> Roles { get; } = new();
+
+        public UserEditViewModel(Window window, int? userId = null)
         {
-            UserRole.Admin,
-            UserRole.Inspector,
-            UserRole.Viewer
-        };
+            this.window = window;
+            this.userId = userId;
 
-        public UserEditViewModel(User user)
-        {
-            if (user != null)
+            foreach (var role in System.Enum.GetValues(typeof(UserRole)).Cast<UserRole>())
+                Roles.Add(role);
+
+            if (userId.HasValue)
             {
-                _user = user;
-                FullName = user.FullName;
-                Login = user.Login;
-                Role = user.Role;
-            }
-            else
-            {
-                _user = new User();
-                Role = UserRole.Viewer; // Роль по умолчанию
+                WindowTitle = "Редактирование пользователя";
+                LoadUser(userId.Value);
             }
         }
-        public UserEditViewModel()
-        {
-            
-        }
 
-        // Сохранение данных пользователя
-        [RelayCommand]
-        public void Save()
+        private void LoadUser(int id)
         {
             using var db = new AppDbContext();
 
-            _user.FullName = FullName;
-            _user.Login = Login;
-            _user.Role = Role;
+            var entity = db.Users
+                .AsNoTracking()
+                .FirstOrDefault(x => x.Id == id);
 
-            if (_user.Id == 0) // Новый пользователь
+            if (entity == null)
+                return;
+
+            FullName = entity.FullName;
+            Login = entity.Login;
+            SelectedRole = entity.Role;
+        }
+
+        [RelayCommand]
+        private void Save()
+        {
+            ErrorMessage = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(FullName))
             {
-                db.Users.Add(_user);
+                ErrorMessage = "Введите ФИО пользователя.";
+                return;
             }
-            else // Редактируем существующего пользователя
+
+            if (string.IsNullOrWhiteSpace(Login))
             {
-                db.Users.Update(_user);
+                ErrorMessage = "Введите логин.";
+                return;
+            }
+
+            using var db = new AppDbContext();
+
+            var trimmedFullName = FullName.Trim();
+            var trimmedLogin = Login.Trim();
+
+            var loginExists = db.Users.Any(x =>
+                x.Login == trimmedLogin &&
+                x.Id != (userId ?? 0));
+
+            if (loginExists)
+            {
+                ErrorMessage = "Пользователь с таким логином уже существует.";
+                return;
+            }
+
+            if (userId.HasValue)
+            {
+                var entity = db.Users.FirstOrDefault(x => x.Id == userId.Value);
+                if (entity == null)
+                {
+                    ErrorMessage = "Пользователь не найден.";
+                    return;
+                }
+
+                entity.FullName = trimmedFullName;
+                entity.Login = trimmedLogin;
+                entity.Role = SelectedRole;
+
+                if (!string.IsNullOrWhiteSpace(Password))
+                    entity.PasswordHash = PasswordHasher.HashPassword(Password);
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(Password))
+                {
+                    ErrorMessage = "Введите пароль для нового пользователя.";
+                    return;
+                }
+
+                db.Users.Add(new User
+                {
+                    FullName = trimmedFullName,
+                    Login = trimmedLogin,
+                    Role = SelectedRole,
+                    PasswordHash = PasswordHasher.HashPassword(Password)
+                });
             }
 
             db.SaveChanges();
-        }
-
-        // Закрытие окна
-        [RelayCommand]
-        public void Cancel()
-        {
-            // Логика для отмены редактирования
+            window.DialogResult = true;
+            window.Close();
         }
     }
 }

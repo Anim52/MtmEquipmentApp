@@ -14,185 +14,287 @@
         Background="Transparent"
         AllowsTransparency="True">
 
-    <Grid>
-        <Border CornerRadius="22"
-                Background="#F4F7FB"
-                BorderBrush="#D9E2EC"
-                BorderThickness="1">
+    <Window.Resources>
+        <DropShadowEffect x:Key="WindowShadow"
+                          BlurRadius="28"
+                          ShadowDepth="0"
+                          Opacity="0.22"
+                          Color="#000000"/>
+
+        <DropShadowEffect x:Key="CardShadow"
+                          BlurRadius="20"
+                          ShadowDepth="0"
+                          Opacity="0.10"
+                          Color="#000000"/>
+
+        <LinearGradientBrush x:Key="LeftPanelGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#0F172A" Offset="0"/>
+            <GradientStop Color="#111827" Offset="0.35"/>
+            <GradientStop Color="#1D4ED8" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="AccentGradient" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#3B82F6" Offset="0"/>
+            <GradientStop Color="#2563EB" Offset="1"/>
+        </LinearGradientBrush>
+
+        <Style x:Key="InputTextBoxStyle" TargetType="TextBox">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="#111827"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="InputPasswordBoxStyle" TargetType="PasswordBox">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="#111827"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="ModernInputBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Margin" Value="0,0,0,18"/>
+        </Style>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#2563EB"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="14">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.92"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.82"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CloseButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="36"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Background" Value="#14FFFFFF"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="CloseBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="18">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="CloseBorder" Property="Background" Value="#26FFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="CloseBorder" Property="Background" Value="#40FFFFFF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="FeatureItemStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="#E5EEFf"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="#11000000">
+        <Border CornerRadius="28"
+                Margin="18"
+                Background="#F8FAFC"
+                BorderBrush="#E2E8F0"
+                BorderThickness="1"
+                Effect="{StaticResource WindowShadow}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.3*" />
+                    <ColumnDefinition Width="1.35*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
 
                 <!-- Левая часть -->
-                <Grid Background="#1E293B">
-                    <Grid.Resources>
-                        <LinearGradientBrush x:Key="PanelGradient" StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#0F172A" Offset="0"/>
-                            <GradientStop Color="#1D4ED8" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Grid.Resources>
+                <Border Grid.Column="0"
+                        CornerRadius="28,0,0,28"
+                        Background="{StaticResource LeftPanelGradient}">
+                    <Grid ClipToBounds="True">
+                        <!-- Декор -->
+                        <Ellipse Width="240"
+                                 Height="240"
+                                 Fill="#12FFFFFF"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 Margin="-70,-80,0,0"/>
 
-                    <Border Background="{StaticResource PanelGradient}"
-                            CornerRadius="22,0,0,22">
-                        <Grid Margin="40">
+                        <Ellipse Width="320"
+                                 Height="320"
+                                 Fill="#10FFFFFF"
+                                 HorizontalAlignment="Right"
+                                 VerticalAlignment="Bottom"
+                                 Margin="0,0,-120,-140"/>
+
+                        <Grid Margin="46">
                             <StackPanel VerticalAlignment="Center">
+                                <Border Background="#18FFFFFF"
+                                        BorderBrush="#24FFFFFF"
+                                        BorderThickness="1"
+                                        CornerRadius="20"
+                                        Padding="10,6"
+                                        HorizontalAlignment="Left"
+                                        Margin="0,0,0,22">
+                                    <TextBlock Text="Платформа управления оборудованием"
+                                               FontSize="12"
+                                               FontWeight="SemiBold"
+                                               Foreground="#E2E8F0"/>
+                                </Border>
+
                                 <TextBlock Text="MTM Equipment"
-                                           FontSize="34"
+                                           FontSize="38"
                                            FontWeight="Bold"
                                            Foreground="White"
                                            Margin="0,0,0,10"/>
 
-                                <TextBlock Text="Система учёта и контроля оборудования"
-                                           FontSize="18"
-                                           Foreground="#DCE7F7"
-                                           Margin="0,0,0,28"/>
+                                <TextBlock Text="Современная система учёта, инспекций и контроля состояния оборудования"
+                                           FontSize="17"
+                                           Foreground="#CBD5E1"
+                                           TextWrapping="Wrap"
+                                           Margin="0,0,0,34"/>
 
-                                <Border Background="#FFFFFF18"
-                                        CornerRadius="18"
-                                        Padding="20">
+                                <Border Background="#14FFFFFF"
+                                        BorderBrush="#22FFFFFF"
+                                        BorderThickness="1"
+                                        CornerRadius="24"
+                                        Padding="24">
                                     <StackPanel>
-                                        <TextBlock Text="Возможности системы"
+                                        <TextBlock Text="Что доступно в системе"
                                                    FontSize="18"
                                                    FontWeight="SemiBold"
-                                                   Foreground="Black"
-                                                   Margin="0,0,0,16"/>
+                                                   Foreground="White"
+                                                   Margin="0,0,0,18"/>
 
-                                        <TextBlock Text="• учёт оборудования"
-                                                   FontSize="15"
-                                                   Foreground="Black"
-                                                   Margin="0,0,0,8"/>
-                                        <TextBlock Text="• журнал инспекций"
-                                                   FontSize="15"
-                                                   Foreground="Black"
-                                                   Margin="0,0,0,8"/>
-                                        <TextBlock Text="• контроль дефектов"
-                                                   FontSize="15"
-                                                   Foreground="Black"
-                                                   Margin="0,0,0,8"/>
-                                        <TextBlock Text="• разграничение ролей"
-                                                   FontSize="15"
-                                                   Foreground="Black"/>
+                                        <TextBlock Text="• Учёт оборудования и карточек объектов"
+                                                   Style="{StaticResource FeatureItemStyle}"/>
+
+                                        <TextBlock Text="• Журнал инспекций и результатов осмотров"
+                                                   Style="{StaticResource FeatureItemStyle}"/>
+
+                                        <TextBlock Text="• Контроль дефектов и замечаний"
+                                                   Style="{StaticResource FeatureItemStyle}"/>
+
+                                        <TextBlock Text="• Разграничение прав доступа по ролям"
+                                                   Style="{StaticResource FeatureItemStyle}"
+                                                   Margin="0"/>
                                     </StackPanel>
                                 </Border>
                             </StackPanel>
                         </Grid>
-                    </Border>
-                </Grid>
+                    </Grid>
+                </Border>
 
                 <!-- Правая часть -->
-                <Grid Grid.Column="1" Margin="48">
+                <Grid Grid.Column="1" Margin="33">
                     <Border Background="White"
-                            CornerRadius="20"
-                            Padding="24"
-                            VerticalAlignment="Center">
+                            CornerRadius="23"
+                            Padding="30"
+                            VerticalAlignment="Center"
+                            Effect="{StaticResource CardShadow}">
                         <StackPanel>
                             <TextBlock Text="Вход в систему"
-                                       FontSize="28"
+                                       FontSize="30"
                                        FontWeight="Bold"
-                                       Foreground="#1F2937"
+                                       Foreground="#0F172A"
                                        Margin="0,0,0,8"/>
 
-                            <TextBlock Text="Введите логин и пароль для продолжения"
+                            <TextBlock Text="Введите логин и пароль для продолжения работы"
                                        FontSize="13"
-                                       Foreground="#6B7280"
-                                       Margin="0,0,0,26"/>
+                                       Foreground="#64748B"
+                                       Margin="0,0,0,28"/>
 
                             <TextBlock Text="Логин"
-                                       FontSize="14"
+                                       FontSize="13"
                                        FontWeight="SemiBold"
-                                       Foreground="#374151"
+                                       Foreground="#334155"
                                        Margin="0,0,0,8"/>
 
-                            <Border Background="#F9FAFB"
-                                    BorderBrush="#D1D5DB"
-                                    BorderThickness="1"
-                                    CornerRadius="12"
-                                    Margin="0,0,0,18">
+                            <Border Style="{StaticResource ModernInputBorderStyle}">
                                 <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"
-                                         FontSize="15"
-                                         Padding="14"
-                                         BorderThickness="0"
-                                         Background="Transparent"/>
+                                         Style="{StaticResource InputTextBoxStyle}"/>
                             </Border>
 
                             <TextBlock Text="Пароль"
-                                       FontSize="14"
+                                       FontSize="13"
                                        FontWeight="SemiBold"
-                                       Foreground="#374151"
+                                       Foreground="#334155"
                                        Margin="0,0,0,8"/>
 
-                            <Border Background="#F9FAFB"
-                                    BorderBrush="#D1D5DB"
-                                    BorderThickness="1"
-                                    CornerRadius="12"
+                            <Border Style="{StaticResource ModernInputBorderStyle}"
                                     Margin="0,0,0,12">
                                 <PasswordBox x:Name="PasswordInput"
-                                             FontSize="15"
-                                             Padding="14"
-                                             BorderThickness="0"
-                                             Background="Transparent"
+                                             Style="{StaticResource InputPasswordBoxStyle}"
                                              PasswordChanged="PasswordInput_PasswordChanged"/>
                             </Border>
 
                             <TextBlock Text="{Binding ErrorMessage}"
                                        Foreground="#DC2626"
                                        FontSize="13"
+                                       TextWrapping="Wrap"
+                                       MinHeight="20"
                                        Margin="0,0,0,18"/>
 
                             <Button Content="Войти"
-        Height="48"
-        FontSize="15"
-        FontWeight="SemiBold"
-        Foreground="White"
-        Background="#2563EB"
-        BorderBrush="Transparent"
-        Cursor="Hand"
-        Command="{Binding LoginUserCommand}"
-        CommandParameter="{Binding ElementName=PasswordInput, Path=Password}">
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}"
-                    CornerRadius="12">
-                                            <ContentPresenter HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    Background="{StaticResource AccentGradient}"
+                                    Command="{Binding LoginUserCommand}"
+                                    CommandParameter="{Binding ElementName=PasswordInput, Path=Password}"/>
 
-                            <TextBlock Text="Демо-вход: admin / admin"
-                                       Foreground="#6B7280"
-                                       FontSize="12"
-                                       HorizontalAlignment="Center"
-                                       Margin="0,16,0,0"/>
+                           
                         </StackPanel>
                     </Border>
                 </Grid>
 
                 <!-- Кнопка закрытия -->
                 <Button Content="✕"
-                        Width="34"
-                        Height="34"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
-                        Margin="0,14,14,0"
-                        Background="#FFFFFF22"
-                        Foreground="Black"
-                        BorderBrush="Transparent"
-                        Cursor="Hand"
-                        Click="Close_Click">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}"
-                                    CornerRadius="17">
-                                <ContentPresenter HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
+                        Margin="0,16,16,0"
+                        Style="{StaticResource CloseButtonStyle}"
+                        Click="Close_Click"/>
             </Grid>
         </Border>
     </Grid>
