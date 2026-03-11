@@ -1,0 +1,61 @@
+﻿<Window x:Class="MtmEquipmentApp.Views.Windows.InspectionEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MtmEquipmentApp.Views.Windows"
+        mc:Ignorable="d"
+        Title="Редактирование инспекции" Height="550" Width="400">
+
+   
+
+    <Grid Margin="20">
+        <TextBlock Text="Дата инспекции"
+                   VerticalAlignment="Top" FontSize="16" />
+
+        <DatePicker SelectedDate="{Binding InspectionDate}"
+                    VerticalAlignment="Top"
+                    Margin="0,40,0,0"
+                    Height="30" />
+
+        <TextBlock Text="Оборудование"
+                   VerticalAlignment="Top" FontSize="16" Margin="0,80,0,0"/>
+
+        <ComboBox ItemsSource="{Binding EquipmentList}"
+                  SelectedItem="{Binding SelectedEquipment}"
+                  DisplayMemberPath="Name"
+                  VerticalAlignment="Top"
+                  Margin="0,120,0,0"
+                  Height="30" />
+
+        <TextBlock Text="Инспектор"
+                   VerticalAlignment="Top" FontSize="16" Margin="0,160,0,0"/>
+
+        <ComboBox ItemsSource="{Binding InspectorList}"
+                  SelectedItem="{Binding SelectedInspector}"
+                  DisplayMemberPath="FullName"
+                  VerticalAlignment="Top"
+                  Margin="0,200,0,0"
+                  Height="30" />
+
+        <TextBlock Text="Замечания"
+                   VerticalAlignment="Top" FontSize="16" Margin="0,240,0,0"/>
+
+        <TextBox Text="{Binding Remarks}"
+                 VerticalAlignment="Top"
+                 Margin="0,280,0,0"
+                 Height="60" />
+
+        <Button Content="Сохранить"
+                Command="{Binding Save}"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"
+                Margin="0,0,50,20" />
+
+        <Button Content="Отмена"
+                Command="{Binding Cancel}"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Left"
+                Margin="50,0,0,20" />
+    </Grid>
+</Window>

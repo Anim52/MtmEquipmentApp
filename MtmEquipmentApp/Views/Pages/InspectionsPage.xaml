@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="MtmEquipmentApp.Views.Pages.InspectionsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MtmEquipmentApp.Views.Pages"
+             xmlns:viewModels="clr-namespace:MtmEquipmentApp.ViewModel.Inspections"
+             Height="450" Width="800">
+
+    <UserControl.DataContext>
+        <viewModels:InspectionPageViewModel />
+    </UserControl.DataContext>
+
+    <Grid Margin="20">
+
+        <Button Content="Добавить инспекцию"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Command="{Binding AddInspection}" />
+
+        <!-- Таблица с данными инспекций -->
+        <DataGrid ItemsSource="{Binding Inspections}"
+                  SelectedItem="{Binding SelectedInspection}"
+                  AutoGenerateColumns="False"
+                  Margin="0,60,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Дата"
+                                    Binding="{Binding Date}" />
+                <DataGridTextColumn Header="Оборудование"
+                                    Binding="{Binding Equipment.Name}" />
+                <DataGridTextColumn Header="Инспектор"
+                                    Binding="{Binding Inspector.FullName}" />
+                <DataGridTextColumn Header="Замечания"
+                                    Binding="{Binding Remarks}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Кнопки для редактирования и удаления -->
+        <Button Content="Редактировать"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Command="{Binding EditInspection}"
+                Margin="0,0,100,20" />
+
+        <Button Content="Удалить"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Command="{Binding DeleteInspection}"
+                Margin="0,0,20,20" />
+    </Grid>
+</UserControl>
