@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:MtmEquipmentApp.Views.Windows"
         mc:Ignorable="d"
         Title="Инспекция"
-        Height="520"
+        Height="570"
         Width="520"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        Background="#F8FAFC">
+        Background="#F8FAFC"
+        Icon="/Recources/Image/Image.ico">
 
     <Window.Resources>
         <DropShadowEffect x:Key="WindowShadow"
@@ -159,8 +160,7 @@
                         Padding="8,4">
                     <ComboBox ItemsSource="{Binding EquipmentList}"
                               SelectedItem="{Binding SelectedEquipment}"
-                              DisplayMemberPath="Name"
-                              Style="{StaticResource ModernComboBoxStyle}"/>
+                              DisplayMemberPath="Name"/>
                 </Border>
 
                 <TextBlock Grid.Row="5"

@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:MtmEquipmentApp.Views.Windows"
         xmlns:viewModels="clr-namespace:MtmEquipmentApp.ViewModel.Departments"
         Title="Подразделение"
-        Height="360"
+        Height="380"
         Width="500"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
-        Background="#F8FAFC">
+        Background="#F8FAFC"
+        Icon="/Recources/Image/Image.ico">
 
     <Window.Resources>
         <DropShadowEffect x:Key="WindowShadow"

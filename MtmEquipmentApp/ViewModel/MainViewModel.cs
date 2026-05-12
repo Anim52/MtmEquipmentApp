@@ -42,6 +42,9 @@ namespace MtmEquipmentApp.ViewModel
         [ObservableProperty]
         private bool canOpenInspections;
 
+        [ObservableProperty]
+        private bool canOpenArchive;
+
         public MainViewModel()
         {
             ConfigureAccess();
@@ -57,6 +60,7 @@ namespace MtmEquipmentApp.ViewModel
             CanOpenReports = true;
 
             CanOpenInspections = currentRole == UserRole.Admin || currentRole == UserRole.Inspector;
+            CanOpenArchive = currentRole == UserRole.Admin || currentRole == UserRole.Inspector;
         }
 
         private void OpenStartPage()
@@ -121,7 +125,16 @@ namespace MtmEquipmentApp.ViewModel
             if (!CanOpenInspections)
                 return;
 
-          CurrentView = new InspectionsPage();
+            CurrentView = new InspectionsPage();
+        }
+
+        [RelayCommand]
+        private void OpenArchive()
+        {
+            if (!CanOpenArchive)
+                return;
+
+            CurrentView = new ArchivePage();
         }
     }
 }

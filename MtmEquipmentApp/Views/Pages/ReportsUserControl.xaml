@@ -119,8 +119,8 @@
                                 <Setter TargetName="RowBorder" Property="Background" Value="#F8FAFC"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="RowBorder" Property="Background" Value="#DBEAFE"/>
-                                <Setter Property="Foreground" Value="#1E3A8A"/>
+                                <Setter TargetName="RowBorder" Property="Background" Value="#1D4ED8"/>
+                                <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -193,8 +193,8 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Background="#F8FAFC"
-                        BorderBrush="#E2E8F0"
+                <Border Background="White"
+                        BorderBrush="#111827"
                         BorderThickness="1"
                         CornerRadius="14"
                         Padding="10,2"
@@ -204,8 +204,8 @@
                 </Border>
 
                 <Border Grid.Column="1"
-                        Background="#F8FAFC"
-                        BorderBrush="#E2E8F0"
+                        Background="White"
+                        BorderBrush="#111827"
                         BorderThickness="1"
                         CornerRadius="14"
                         Padding="10,2"
@@ -215,16 +215,15 @@
                 </Border>
 
                 <Border Grid.Column="2"
-                        Background="#F8FAFC"
-                        BorderBrush="#E2E8F0"
+                        Background="White"
+                        BorderBrush="#111827"
                         BorderThickness="1"
                         CornerRadius="14"
                         Padding="8,2"
                         Margin="0,0,12,0">
                     <ComboBox ItemsSource="{Binding Departments}"
                               SelectedItem="{Binding SelectedDepartment}"
-                              DisplayMemberPath="Name"
-                              Style="{StaticResource ModernComboBoxStyle}"/>
+                              DisplayMemberPath="Name"/>
                 </Border>
 
                 <StackPanel Grid.Column="3"
@@ -238,6 +237,11 @@
                     <Button Content="Сброс"
                             Style="{StaticResource SecondaryButtonStyle}"
                             Command="{Binding ResetCommand}"/>
+                    <Button Content="Экспорт в Excel"
+                            Margin="10,0,0,0"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Click="ExportToExcel_Click"
+                            />
                 </StackPanel>
             </Grid>
         </Border>

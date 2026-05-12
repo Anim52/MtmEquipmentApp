@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:MtmEquipmentApp.Views.Windows"
         mc:Ignorable="d"
         Title="Оборудование"
-        Height="530"
+        Height="560"
         Width="560"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
-        Background="#F8FAFC">
+        Background="#F8FAFC"
+        Icon="/Recources/Image/Image.ico">
 
     <Window.Resources>
         <DropShadowEffect x:Key="WindowShadow"
@@ -165,8 +166,7 @@
                                 CornerRadius="14"
                                 Padding="8,4">
                             <ComboBox ItemsSource="{Binding Statuses}"
-                                      SelectedItem="{Binding SelectedStatus}"
-                                      Style="{StaticResource ModernComboBoxStyle}"/>
+                                      SelectedItem="{Binding SelectedStatus}"/>
                         </Border>
                     </StackPanel>
 
@@ -184,8 +184,7 @@
                                 Padding="8,4">
                             <ComboBox ItemsSource="{Binding Departments}"
                                       SelectedItem="{Binding SelectedDepartment}"
-                                      DisplayMemberPath="Name"
-                                      Style="{StaticResource ModernComboBoxStyle}"/>
+                                      DisplayMemberPath="Name"/>
                         </Border>
                     </StackPanel>
                 </Grid>

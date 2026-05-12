@@ -10,7 +10,8 @@
         Height="720"
         Width="1280"
         WindowStartupLocation="CenterScreen"
-        Background="#F1F5F9">
+        Background="#F1F5F9"
+        Icon="/Recources/Image/Image.ico">
 
     <Window.Resources>
         <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
@@ -215,9 +216,14 @@
 
                             <Button Content="Инспекции"
                                     Style="{StaticResource NavButtonStyle}"
-                                    Margin="0"
                                     Visibility="{Binding CanOpenInspections, Converter={StaticResource BoolToVisibilityConverter}}"
                                     Command="{Binding OpenInspectionsCommand}"/>
+
+                            <Button Content="Архив"
+                                    Style="{StaticResource NavButtonStyle}"
+                                    Margin="0"
+                                    Visibility="{Binding CanOpenArchive, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    Command="{Binding OpenArchiveCommand}"/>
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>

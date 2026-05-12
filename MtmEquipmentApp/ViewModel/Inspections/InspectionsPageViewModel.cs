@@ -62,6 +62,20 @@ namespace MtmEquipmentApp.ViewModel.Inspections
                 LoadInspections();
         }
 
+
+        [RelayCommand]
+        private void OpenEquipmentHistory()
+        {
+            if (SelectedInspection?.Equipment == null)
+            {
+                MessageBox.Show("Выберите инспекцию для просмотра истории оборудования.");
+                return;
+            }
+
+            var window = new EquipmentHistoryWindow(SelectedInspection.Equipment.Id);
+            window.ShowDialog();
+        }
+
         [RelayCommand]
         private void Delete()
         {

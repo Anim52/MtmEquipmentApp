@@ -84,16 +84,22 @@ namespace MtmEquipmentApp.ViewModel.Equipments
         [RelayCommand]
         private void Delete()
         {
+            Decommission();
+        }
+
+        [RelayCommand]
+        private void Decommission()
+        {
             if (SelectedEquipment == null)
             {
-                MessageBox.Show("Выберите оборудование для удаления.",
+                MessageBox.Show("Выберите оборудование для списания.",
                     "Внимание", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
             var result = MessageBox.Show(
-                $"Удалить оборудование \"{SelectedEquipment.Name}\"?",
-                "Подтверждение",
+                $"Списать оборудование \"{SelectedEquipment.Name}\" в архив? Оно пропадёт из общего списка, но останется в разделе Архив.",
+                "Подтверждение списания",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
 
@@ -108,10 +114,24 @@ namespace MtmEquipmentApp.ViewModel.Equipments
             if (entity == null)
                 return;
 
-            db.Equipment.Remove(entity);
+            entity.Status = EquipmentStatus.Decommissioned;
             db.SaveChanges();
 
             LoadEquipment();
+        }
+
+        [RelayCommand]
+        private void OpenHistory()
+        {
+            if (SelectedEquipment == null)
+            {
+                MessageBox.Show("Выберите оборудование для просмотра истории.",
+                    "Внимание", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var window = new EquipmentHistoryWindow(SelectedEquipment.Id);
+            window.ShowDialog();
         }
 
         private void LoadDepartments()
@@ -139,6 +159,7 @@ namespace MtmEquipmentApp.ViewModel.Equipments
 
             var data = db.Equipment
                 .Include(x => x.Department)
+                .Where(x => x.Status != EquipmentStatus.Decommissioned)
                 .AsNoTracking()
                 .OrderBy(x => x.Name)
                 .ToList();

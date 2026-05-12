@@ -60,12 +60,13 @@
         </Style>
 
         <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#111827"/>
+            <Setter Property="Background" Value="White"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Foreground" Value="#0F172A"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="2"/>
+            <Setter Property="Padding" Value="8,2"/>
         </Style>
 
         <Style TargetType="DataGridColumnHeader">
@@ -109,8 +110,8 @@
                                 <Setter TargetName="RowBorder" Property="Background" Value="#F8FAFC"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="RowBorder" Property="Background" Value="#DBEAFE"/>
-                                <Setter Property="Foreground" Value="#1E3A8A"/>
+                                <Setter TargetName="RowBorder" Property="Background" Value="#1D4ED8"/>
+                                <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -196,8 +197,8 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Background="#F8FAFC"
-                        BorderBrush="#E2E8F0"
+                <Border Background="White"
+                        BorderBrush="#111827"
                         BorderThickness="1"
                         CornerRadius="14"
                         Padding="12,8"

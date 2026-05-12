@@ -109,8 +109,8 @@
                                 <Setter TargetName="RowBorder" Property="Background" Value="#F8FAFC"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="RowBorder" Property="Background" Value="#DBEAFE"/>
-                                <Setter Property="Foreground" Value="#1E3A8A"/>
+                                <Setter TargetName="RowBorder" Property="Background" Value="#1D4ED8"/>
+                                <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -202,8 +202,8 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Border Background="#F8FAFC"
-                        BorderBrush="#E2E8F0"
+                <Border Background="White"
+                        BorderBrush="#111827"
                         BorderThickness="1"
                         CornerRadius="14"
                         Padding="10,2"
@@ -213,8 +213,8 @@
                 </Border>
 
                 <Border Grid.Column="1"
-                        Background="#F8FAFC"
-                        BorderBrush="#E2E8F0"
+                        Background="White"
+                        BorderBrush="#111827"
                         BorderThickness="1"
                         CornerRadius="14"
                         Padding="10,2"
@@ -226,6 +226,11 @@
                 <StackPanel Grid.Column="2"
                             Orientation="Horizontal"
                             HorizontalAlignment="Right">
+                    <Button Content="История оборудования"
+                            Margin="0,0,10,0"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Command="{Binding OpenEquipmentHistoryCommand}"/>
+
                     <Button Content="Редактировать"
                             Margin="0,0,10,0"
                             Style="{StaticResource SecondaryButtonStyle}"
@@ -261,7 +266,8 @@
                       RowHeight="46"
                       FontSize="14"
                       SelectionMode="Single"
-                      SelectionUnit="FullRow">
+                      SelectionUnit="FullRow"
+                      MouseDoubleClick="InspectionsGrid_MouseDoubleClick">
 
                 <DataGrid.Columns>
 

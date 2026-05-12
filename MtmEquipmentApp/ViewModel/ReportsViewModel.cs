@@ -60,6 +60,7 @@ namespace MtmEquipmentApp.ViewModel
             var equipmentQuery = db.Equipment
                 .Include(x => x.Department)
                 .Include(x => x.Inspections)
+                .Where(x => x.Status != EquipmentStatus.Decommissioned)
                 .AsNoTracking()
                 .AsQueryable();
 

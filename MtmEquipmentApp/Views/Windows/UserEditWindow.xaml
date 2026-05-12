@@ -9,7 +9,8 @@
         Width="560"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
-        Background="#F8FAFC">
+        Background="#F8FAFC"
+        Icon="/Recources/Image/Image.ico">
 
     <Window.Resources>
         <DropShadowEffect x:Key="WindowShadow"
@@ -172,8 +173,7 @@
                                 CornerRadius="14"
                                 Padding="8,4">
                             <ComboBox ItemsSource="{Binding Roles}"
-                                      SelectedItem="{Binding SelectedRole}"
-                                      Style="{StaticResource ModernComboBoxStyle}"/>
+                                      SelectedItem="{Binding SelectedRole}"/>
                         </Border>
                     </StackPanel>
 

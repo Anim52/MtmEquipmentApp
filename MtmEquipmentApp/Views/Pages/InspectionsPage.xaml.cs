@@ -24,5 +24,11 @@ namespace MtmEquipmentApp.Views.Pages
             InitializeComponent();
             DataContext = new InspectionViewModel();
         }
+
+        private void InspectionsGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is InspectionViewModel viewModel && viewModel.OpenEquipmentHistoryCommand.CanExecute(null))
+                viewModel.OpenEquipmentHistoryCommand.Execute(null);
+        }
     }
 }
